@@ -93,7 +93,7 @@ while True:
         print("\créditos:")
         print(" ")
         print("Auspicia Codo a Codo 4.0 - Agencia de Aprendizaje a lo largo de la vida - Gobierno de la Ciudad de Buenos Aires, Argentina")
-        print("Programadores: Nicolas Alejandro Tello")
+        print("Programadores: Nicolas Alejandro Tello, Sheila Pisco")
         print("Fecha de elaboración: Octubre 2023")
     elif opcion == "5":
         print(" ")
