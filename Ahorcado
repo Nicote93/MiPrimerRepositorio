@@ -9,11 +9,10 @@ def seleccionar_palabra():
 
 # Función para jugar
 def jugar_ahorcado():
+    global palabra_secreta
     palabra_secreta = seleccionar_palabra()
     intentos = 5
     letras_adivinadas = []
-    
-    print("¡Bienvenido al juego del Ahorcadito Codo a Codo 4.0")
     
     while True:
         palabra_mostrada = ""
@@ -21,14 +20,14 @@ def jugar_ahorcado():
             if letra in letras_adivinadas:
                 palabra_mostrada += letra
             else:
-                palabra_mostrada += "_" ## ¨+=¨ adición y asignación. Agrega el valor a la derecha al valor a la izquierda y luego asigna el resultado a la variable a la izquierda.
+                palabra_mostrada += "_ " ## ¨+=¨ adición y asignación. Agrega el valor a la derecha al valor a la izquierda y luego asigna el resultado a la variable a la izquierda.
         print(f"Palabra actual: {palabra_mostrada}")
         print(f"Intentos restantes: {intentos}")
         
         if palabra_mostrada == palabra_secreta:
             print(" ")
             print("¡Felicidades! Has adivinado la palabra.")
-            return True
+            return palabra_mostrada, True
         elif intentos == 0:
             print(" ")
             print(f"¡Perdiste! La palabra era '{palabra_secreta}'.")
@@ -53,52 +52,62 @@ def jugar_ahorcado():
 resultados = []
 
 # Menú principal
-while True:
-    print(" ")
-    print("\Bienvenido al ahorcadito Codo a Codo 4.0")
-    print("\nMenú:")
-    print("1. Jugar al Ahorcado")
-    print("2. Ver resultados")
-    print("3. instrucciones")
-    print("4. créditos")
-    print("5. Salir")
-    print(" ")
-    
-    opcion = input("Elige una opción: ")
-    
-    if opcion == "1":
-        if jugar_ahorcado():
-            nombre_jugador = input("¡Felicidades! Ingresa tu nombre para guardar el resultado: ")
-            resultados.append((nombre_jugador, 1))
+def menu_principal():
+    while True:
+        
+        print("Menú:")
+        print("1. Jugar al Ahorcado")
+        print("2. Ver resultados")
+        print("3. instrucciones")
+        print("4. créditos")
+        print("5. Salir")
+        print(" ")
+        
+        opcion = input("Elige una opción: ")
+        
+        if opcion == "1":
+            if jugar_ahorcado():
+                puntaje = int(len(palabra_secreta))
+                nombre_jugador = input("¡Felicidades! Ingresa tu nombre para guardar el resultado: ")
+                resultados.append((nombre_jugador, puntaje))
+            else:
+                nombre_jugador = input("¡Inténtalo de nuevo! Ingresa tu nombre para guardar el resultado: ")
+        elif opcion == "2":
+            print(" ")
+            print("\nResultados:")
+            for nombre, puntaje in resultados:
+                print(f"{nombre}: {puntaje} puntos")
+        elif opcion == "3":
+            print(" ")
+            print("\instrucciones:")
+            print("1. Selecciona Jugar al Ahorcado")
+            print("2. Selecciona letras en base a la palabra que creas que puede formarse")
+            print("3. En caso de equivocarte, se te restaran intentos")
+            print("4. En caso de acertar se autocompletara la letra. Si aciertas todo veras la palabra secreta")
+            print("5. Si seleccionas ver resultados podras ver la tabla de puntuación de jugadores anteriores")
+            print("6. Si seleccionas creditos veras los auspiciantes de este juego, programadores y fecha de elaboración")
+            print("7. Si seleccionas salir, se finaliza el programa.")
+        elif opcion == "4":
+            print(" ")
+            print("\créditos:")
+            print(" ")
+            print("Auspicia Codo a Codo 4.0 - Agencia de Aprendizaje a lo largo de la vida - Gobierno de la Ciudad de Buenos Aires, Argentina")
+            print("Programadores: Nicolas Alejandro Tello, Sheila Pisco, Valeria Pierri, Daniela Punzo.")
+            print("Fecha de elaboración: Octubre-Noviembre 2023")
+        elif opcion == "5":
+            print(" ")
+            print("Gracias por jugar. ¡Hasta la próxima!")
+            break
         else:
-            nombre_jugador = input("¡Inténtalo de nuevo! Ingresa tu nombre para guardar el resultado: ")
-            resultados.append((nombre_jugador, 0))
-    elif opcion == "2":
-        print(" ")
-        print("\nResultados:")
-        for nombre, puntaje in resultados:
-            print(f"{nombre}: {puntaje} puntos")
-    elif opcion == "3":
-        print(" ")
-        print("\instrucciones:")
-        print("1. Selecciona Jugar al Ahorcado")
-        print("2. Selecciona letras en base a la palabra que creas que puede formarse")
-        print("3. En caso de equivocarte, se te restaran intentos")
-        print("4. En caso de acertar se autocompletara la letra. Si aciertas todo veras la palabra secreta")
-        print("5. Si seleccionas ver resultados podras ver la tabla de puntuación de jugadores anteriores")
-        print("6. Si seleccionas creditos veras los auspiciantes de este juego, programadores y fecha de elaboración")
-        print("7. Si seleccionas salir, se finaliza el programa.")
-    elif opcion == "4":
-        print(" ")
-        print("\créditos:")
-        print(" ")
-        print("Auspicia Codo a Codo 4.0 - Agencia de Aprendizaje a lo largo de la vida - Gobierno de la Ciudad de Buenos Aires, Argentina")
-        print("Programadores: Nicolas Alejandro Tello, Sheila Pisco")
-        print("Fecha de elaboración: Octubre 2023")
-    elif opcion == "5":
-        print(" ")
-        print("Gracias por jugar. ¡Hasta la próxima!")
-        break
-    else:
-        print(" ")
-        print("Opción no válida. Por favor, elige una opción válida.")
+            print(" ")
+            print("Opción no válida. Por favor, elige una opción válida.")
+
+def main():
+
+    print(" ")
+    print("¡Bienvenido al ahorcadito Codo a Codo 4.0!")
+    print(" ")
+
+    menu_principal()
+
+main()
