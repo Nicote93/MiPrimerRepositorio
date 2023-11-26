@@ -1,7 +1,19 @@
 import random
 
 # Keywords
-palabras = ["banana", "lechuga", "fideos", "carne", "gaseosa", "helado", "chocolate", "tiramisu"]
+palabras = ["banana", "lechuga", "fideos", "carne", "gaseosa", "helado", "chocolate", "tiramisu",
+            "empanada","alfajor","locro","milanesa","pizza","asado","queso","cañoncito","chimichurri",
+            "berenjena","carbonara","provoleta","mate","manzana","matambre","sorrentinos","puchero"]
+# Pide al jugador que ingrese un nombre válido.
+def pedir_nombre():
+    largo = True
+    while largo:
+        nombre_jugador = input("\nIngresa tu nombre para guardar el resultado: ")
+        if len(nombre_jugador) > 1:
+            largo = False
+            return(nombre_jugador)
+        else:
+            print("El nombre ingresado debe contener al menos 2 caracteres.")
 
 # Seleccionar una palabra al azar
 def seleccionar_palabra():
@@ -9,7 +21,7 @@ def seleccionar_palabra():
 
 # Función para jugar
 def jugar_ahorcado():
-    global palabra_secreta
+    global palabra_secreta #"forzamos" que la variable sea accesible fuera de la función, para poder asignar el puntaje según el largo de la palabra seleccionada.
     palabra_secreta = seleccionar_palabra()
     intentos = 5
     letras_adivinadas = []
@@ -21,32 +33,26 @@ def jugar_ahorcado():
                 palabra_mostrada += letra
             else:
                 palabra_mostrada += "_ " ## ¨+=¨ adición y asignación. Agrega el valor a la derecha al valor a la izquierda y luego asigna el resultado a la variable a la izquierda.
-        print(f"Palabra actual: {palabra_mostrada}")
-        print(f"Intentos restantes: {intentos}")
+        print(f"Palabra actual: {palabra_mostrada} \nIntentos restantes: {intentos}")
         
         if palabra_mostrada == palabra_secreta:
-            print(" ")
-            print("¡Felicidades! Has adivinado la palabra.")
+            print("\n¡Felicidades! Has adivinado la palabra.")
             return palabra_mostrada, True
         elif intentos == 0:
-            print(" ")
-            print(f"¡Perdiste! La palabra era '{palabra_secreta}'.")
+            print(f"\n¡Perdiste! La palabra era '{palabra_secreta}'.\n")
             return False
         
         letra_intentada = input("Ingresa una letra: ").lower()
         
         if letra_intentada in letras_adivinadas:
-            print(" ")
-            print("Ya has intentado con esa letra.")
+            print("\nYa has intentado con esa letra.")
         elif letra_intentada in palabra_secreta:
-            print(" ")
-            print("¡Buena elección! La letra está en la palabra.")
+            print("\n¡Buena elección! La letra está en la palabra.")
             letras_adivinadas.append(letra_intentada)
         else:
-            print(" ")
-            print("¡Incorrecto! La letra no está en la palabra.")
+            print("\n¡Incorrecto! La letra no está en la palabra.")
             letras_adivinadas.append(letra_intentada)
-            intentos -= 1 ## ¨-=¨ resta y asignación en Python. Este operador resta el valor a la derecha del operador del valor a la izquierda y luego asigna el resultado a la variable a la izquierda.
+            intentos -= 1 # ¨-=¨ resta y asignación en Python. Este operador resta el valor a la derecha del operador del valor a la izquierda y luego asigna el resultado a la variable a la izquierda.
 
 # Lista para guardar resultados
 resultados = []
@@ -55,59 +61,52 @@ resultados = []
 def menu_principal():
     while True:
         
-        print("Menú:")
+        print("\nMenú:\n")
         print("1. Jugar al Ahorcado")
         print("2. Ver resultados")
-        print("3. instrucciones")
-        print("4. créditos")
-        print("5. Salir")
-        print(" ")
+        print("3. Instrucciones")
+        print("4. Créditos")
+        print("5. Salir\n")
         
         opcion = input("Elige una opción: ")
         
         if opcion == "1":
             if jugar_ahorcado():
                 puntaje = int(len(palabra_secreta))
-                nombre_jugador = input("¡Felicidades! Ingresa tu nombre para guardar el resultado: ")
+                nombre_jugador = pedir_nombre()
                 resultados.append((nombre_jugador, puntaje))
             else:
-                nombre_jugador = input("¡Inténtalo de nuevo! Ingresa tu nombre para guardar el resultado: ")
+                print("¡Inténtalo de nuevo!")
+                nombre_jugador = pedir_nombre()
+                resultados.append((nombre_jugador, 0))
         elif opcion == "2":
-            print(" ")
-            print("\nResultados:")
+            print("\nResultados:\n")
             for nombre, puntaje in resultados:
                 print(f"{nombre}: {puntaje} puntos")
         elif opcion == "3":
-            print(" ")
-            print("\instrucciones:")
-            print("1. Selecciona Jugar al Ahorcado")
-            print("2. Selecciona letras en base a la palabra que creas que puede formarse")
-            print("3. En caso de equivocarte, se te restaran intentos")
-            print("4. En caso de acertar se autocompletara la letra. Si aciertas todo veras la palabra secreta")
-            print("5. Si seleccionas ver resultados podras ver la tabla de puntuación de jugadores anteriores")
-            print("6. Si seleccionas creditos veras los auspiciantes de este juego, programadores y fecha de elaboración")
-            print("7. Si seleccionas salir, se finaliza el programa.")
+            print("\nInstrucciones:\n")
+            print("> Si seleccionas 'Jugar al Ahorcado':")
+            print("    . Deberás introducir letras en base a la palabra que creas que puede formarse.")
+            print("    . En caso de equivocarte, se te restarán intentos.")
+            print("    . En caso de acertar se autocompletará la letra. ")
+            print("    . Si aciertas todo verás la palabra secreta.")
+            print("> Si seleccionas 'Ver resultados' podrás ver la tabla de puntuación de jugadores anteriores.")
+            print("> Si seleccionas 'Créditos' verás los auspiciantes de este juego, programadores y fecha de elaboración.")
+            print("> Si seleccionas 'Salir' se finaliza el programa.")
         elif opcion == "4":
-            print(" ")
-            print("\créditos:")
-            print(" ")
+            print("\nCréditos:\n")
             print("Auspicia Codo a Codo 4.0 - Agencia de Aprendizaje a lo largo de la vida - Gobierno de la Ciudad de Buenos Aires, Argentina")
             print("Programadores: Nicolas Alejandro Tello, Sheila Pisco, Valeria Pierri, Daniela Punzo.")
             print("Fecha de elaboración: Octubre-Noviembre 2023")
         elif opcion == "5":
-            print(" ")
-            print("Gracias por jugar. ¡Hasta la próxima!")
+            print("\n¡Gracias por jugar! ¡Hasta la próxima!\n")
             break
         else:
-            print(" ")
-            print("Opción no válida. Por favor, elige una opción válida.")
+            print("\nOpción no válida. Por favor, elige una opción válida.")
 
 def main():
 
-    print(" ")
-    print("¡Bienvenido al ahorcadito Codo a Codo 4.0!")
-    print(" ")
-
+    print("\n¡Bienvenido al ahorcadito Codo a Codo 4.0!")
     menu_principal()
 
 main()
